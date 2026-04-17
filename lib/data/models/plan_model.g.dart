@@ -1,12 +1,10 @@
-// lib/data/models/plan_model.g.dart
-//
-// *** هذا الملف يتولد تلقائياً ***
-// شغّل الأمر ده في الـ terminal:
-//   flutter pub run build_runner build --delete-conflicting-outputs
-//
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'plan_model.dart';
+
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
 
 class PlanModelAdapter extends TypeAdapter<PlanModel> {
   @override

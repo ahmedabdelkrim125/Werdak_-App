@@ -6,7 +6,10 @@ import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'data/local/hive_boxes.dart';
 import 'data/models/plan_model.dart';
+import 'data/models/weak_surah_model.dart'; 
+import 'data/repositories/weak_surah_repository.dart'; 
 import 'services/notification_service.dart';
+import 'services/weak_surah_notification_service.dart'; 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,10 +22,14 @@ void main() async {
     await Hive.initFlutter();
     Hive.registerAdapter(PlanModelAdapter());
     Hive.registerAdapter(DayEntryAdapter());
+    Hive.registerAdapter(WeakSurahEntryAdapter()); 
+    Hive.registerAdapter(WeakSurahSettingsAdapter()); 
     await HiveBoxes.openBoxes();
+    await WeakSurahRepository.openBoxes(); 
 
     // Init Notifications
     await NotificationService.instance.init();
+    await WeakSurahNotificationService.instance.init(); 
   } catch (e, stack) {
     debugPrint('❌ Startup error: $e');
     debugPrint('Stack: $stack');

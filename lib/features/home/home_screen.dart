@@ -1,5 +1,3 @@
-// // lib/features/home/home_screen.dart
-
 // import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:flutter_animate/flutter_animate.dart';
@@ -18,93 +16,94 @@
 //     final activePlans = plans.where((p) => !p.isCompleted).toList();
 //     final completedPlans = plans.where((p) => p.isCompleted).toList();
 
-//     return Scaffold(
-//       backgroundColor: AppTheme.background,
-//       body: SafeArea(
-//         child: CustomScrollView(
-//           slivers: [
-//             // Header
-//             SliverToBoxAdapter(
-//               child: Padding(
-//                 padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
-//                 child: Row(
-//                   children: [
-//                     Expanded(
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             _greeting(),
-//                             style: TextStyle(
-//                               fontFamily: 'Cairo',
-//                               fontSize: 14,
-//                               color: AppTheme.textLight,
+//     return Directionality(
+//       textDirection: TextDirection.rtl,
+//       child: Scaffold(
+//         backgroundColor: AppTheme.background,
+//         body: SafeArea(
+//           child: CustomScrollView(
+//             slivers: [
+//               SliverToBoxAdapter(
+//                 child: Padding(
+//                   padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
+//                   child: Row(
+//                     children: [
+//                       Expanded(
+//                         child: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             Text(
+//                               _greeting(),
+//                               style: const TextStyle(
+//                                 fontFamily: 'Cairo',
+//                                 fontSize: 14,
+//                                 color: AppTheme.textLight,
+//                               ),
 //                             ),
-//                           ),
-//                           const Text(
-//                             'خططك',
-//                             style: TextStyle(
-//                               fontFamily: 'Cairo',
-//                               fontSize: 28,
-//                               fontWeight: FontWeight.w700,
-//                               color: AppTheme.textDark,
+//                             const Text(
+//                               'خططك',
+//                               style: TextStyle(
+//                                 fontFamily: 'Cairo',
+//                                 fontSize: 28,
+//                                 fontWeight: FontWeight.w700,
+//                                 color: AppTheme.textDark,
+//                               ),
 //                             ),
-//                           ),
-//                         ],
+//                           ],
+//                         ),
 //                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ).animate().fadeIn(duration: 400.ms),
-//             ),
-
-//             if (activePlans.isEmpty && completedPlans.isEmpty)
-//               SliverFillRemaining(child: _buildEmpty(context))
-//             else ...[
-//               if (activePlans.isNotEmpty) ...[
-//                 _sectionHeader('جارية'),
-//                 SliverList(
-//                   delegate: SliverChildBuilderDelegate(
-//                     (ctx, i) => _PlanCard(plan: activePlans[i])
-//                         .animate()
-//                         .fadeIn(delay: (100 * i).ms)
-//                         .slideX(begin: 0.1, end: 0),
-//                     childCount: activePlans.length,
+//                     ],
 //                   ),
-//                 ),
-//               ],
-//               if (completedPlans.isNotEmpty) ...[
-//                 _sectionHeader('مكتملة'),
-//                 SliverList(
-//                   delegate: SliverChildBuilderDelegate(
-//                     (ctx, i) => _PlanCard(plan: completedPlans[i], done: true),
-//                     childCount: completedPlans.length,
-//                   ),
-//                 ),
-//               ],
-//               const SliverToBoxAdapter(child: SizedBox(height: 100)),
-//             ],
-//           ],
-//         ),
-//       ),
-//       floatingActionButton:
-//           FloatingActionButton.extended(
-//             onPressed: () => context.go('/create/pick-surahs'),
-//             backgroundColor: AppTheme.primary,
-//             foregroundColor: Colors.white,
-//             icon: const Icon(Icons.add),
-//             label: const Text(
-//               'خطة جديدة',
-//               style: TextStyle(
-//                 fontFamily: 'Cairo',
-//                 fontWeight: FontWeight.w600,
+//                 ).animate().fadeIn(duration: 400.ms),
 //               ),
-//             ),
-//           ).animate().scale(
-//             delay: 600.ms,
-//             duration: 400.ms,
-//             curve: Curves.elasticOut,
+//               if (activePlans.isEmpty && completedPlans.isEmpty)
+//                 SliverFillRemaining(child: _buildEmpty(context))
+//               else ...[
+//                 if (activePlans.isNotEmpty) ...[
+//                   _sectionHeader('جارية'),
+//                   SliverList(
+//                     delegate: SliverChildBuilderDelegate(
+//                       (ctx, i) => _PlanCard(plan: activePlans[i])
+//                           .animate()
+//                           .fadeIn(delay: (100 * i).ms)
+//                           .slideX(begin: -0.1, end: 0),
+//                       childCount: activePlans.length,
+//                     ),
+//                   ),
+//                 ],
+//                 if (completedPlans.isNotEmpty) ...[
+//                   _sectionHeader('مكتملة'),
+//                   SliverList(
+//                     delegate: SliverChildBuilderDelegate(
+//                       (ctx, i) =>
+//                           _PlanCard(plan: completedPlans[i], done: true),
+//                       childCount: completedPlans.length,
+//                     ),
+//                   ),
+//                 ],
+//                 const SliverToBoxAdapter(child: SizedBox(height: 100)),
+//               ],
+//             ],
 //           ),
+//         ),
+//         floatingActionButton: FloatingActionButton.extended(
+//           onPressed: () => context.go('/create/pick-surahs'),
+//           backgroundColor: AppTheme.primary,
+//           foregroundColor: Colors.white,
+//           icon: const Icon(Icons.add),
+//           label: const Text(
+//             'خطة جديدة',
+//             style: TextStyle(
+//               fontFamily: 'Cairo',
+//               fontWeight: FontWeight.w600,
+//             ),
+//           ),
+//         ).animate().scale(
+//               delay: 600.ms,
+//               duration: 400.ms,
+//               curve: Curves.elasticOut,
+//             ),
+//       ),
 //     );
 //   }
 
@@ -113,7 +112,11 @@
 //       child: Column(
 //         mainAxisAlignment: MainAxisAlignment.center,
 //         children: [
-//           Icon(Icons.menu_book_outlined, size: 80, color: AppTheme.textLight),
+//           const Icon(
+//             Icons.menu_book_outlined,
+//             size: 80,
+//             color: AppTheme.textLight,
+//           ),
 //           const SizedBox(height: 16),
 //           const Text(
 //             'لا توجد خطط بعد',
@@ -125,7 +128,7 @@
 //             ),
 //           ),
 //           const SizedBox(height: 8),
-//           Text(
+//           const Text(
 //             'أضف خطة مراجعة جديدة',
 //             style: TextStyle(
 //               fontFamily: 'Cairo',
@@ -180,9 +183,8 @@
 //         .take(3)
 //         .map((n) => quran.getSurahNameArabic(n))
 //         .join(' · ');
-//     final extra = plan.surahNumbers.length > 3
-//         ? ' +${plan.surahNumbers.length - 3}'
-//         : '';
+//     final extra =
+//         plan.surahNumbers.length > 3 ? ' +${plan.surahNumbers.length - 3}' : '';
 
 //     final todayIdx = plan.todayIndex;
 //     final hasSession = todayIdx != null && !plan.days[todayIdx].isCompleted;
@@ -271,7 +273,6 @@
 //                 ),
 //               ),
 //               const SizedBox(height: 16),
-//               // Progress bar
 //               ClipRRect(
 //                 borderRadius: BorderRadius.circular(4),
 //                 child: LinearProgressIndicator(
@@ -401,23 +402,26 @@ class HomeScreen extends ConsumerWidget {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => context.go('/create/pick-surahs'),
-          backgroundColor: AppTheme.primary,
-          foregroundColor: Colors.white,
-          icon: const Icon(Icons.add),
-          label: const Text(
-            'خطة جديدة',
-            style: TextStyle(
-              fontFamily: 'Cairo',
-              fontWeight: FontWeight.w600,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 70),
+          child: FloatingActionButton.extended(
+            onPressed: () => context.go('/create/pick-surahs'),
+            backgroundColor: AppTheme.primary,
+            foregroundColor: Colors.white,
+            icon: const Icon(Icons.add),
+            label: const Text(
+              'خطة جديدة',
+              style: TextStyle(
+                fontFamily: 'Cairo',
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-        ).animate().scale(
-              delay: 600.ms,
-              duration: 400.ms,
-              curve: Curves.elasticOut,
-            ),
+          ).animate().scale(
+                delay: 600.ms,
+                duration: 400.ms,
+                curve: Curves.elasticOut,
+              ),
+        ),
       ),
     );
   }
