@@ -1,4 +1,3 @@
-// // lib/services/notification_service.dart
 
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 // import 'package:timezone/timezone.dart' as tz;
@@ -27,7 +26,6 @@
 //         ?.requestNotificationsPermission();
 //   }
 
-//   /// Schedule one notification per day for the entire plan
 //   Future<void> scheduleForPlan(PlanModel plan) async {
 //     await cancelForPlan(plan.id);
 
@@ -39,16 +37,21 @@
 //       final day = plan.days[i];
 //       if (day.isCompleted || day.surahNumbers.isEmpty) continue;
 
-//       final scheduledDate = tz.TZDateTime.from(
-//         plan.startDate.add(Duration(days: i)),
+//       final date = plan.startDate.add(Duration(days: i));
+
+//       final scheduledDate = tz.TZDateTime(
 //         tz.local,
-//       ).copyWith(hour: hour, minute: minute, second: 0);
+//         date.year,
+//         date.month,
+//         date.day,
+//         hour,
+//         minute,
+//       );
 
 //       if (scheduledDate.isBefore(tz.TZDateTime.now(tz.local))) continue;
 
-//       final surahNames = day.surahNumbers
-//           .map((n) => quran.getSurahNameArabic(n))
-//           .join(' + ');
+//       final surahNames =
+//           day.surahNumbers.map((n) => quran.getSurahNameArabic(n)).join(' + ');
 
 //       final notifId = _notifId(plan.id, i);
 
@@ -80,7 +83,6 @@
 //   }
 
 //   Future<void> cancelForPlan(String planId) async {
-//     // Cancel up to 365 possible notifications per plan
 //     for (int i = 0; i < 365; i++) {
 //       await _plugin.cancel(_notifId(planId, i));
 //     }
@@ -90,6 +92,8 @@
 //     return (planId.hashCode + dayIndex).abs() % 100000;
 //   }
 // }
+// lib/services/notification_service.dart
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:quran/quran.dart' as quran;
@@ -124,11 +128,23 @@ class NotificationService {
     final hour = int.parse(timeParts[0]);
     final minute = int.parse(timeParts[1]);
 
+    // ✅ الإصلاح: نعمل normalize لـ startDate على منتصف الليل
+    // المشكلة كانت إن startDate بيتحفظ بوقت الإنشاء (مثلاً 14:35)
+    // فلما بنضيف 0 يوم، اليوم الأول بيطلع scheduledDate في الماضي
+    // لو المنبّه على 08:00 والإنشاء كان الساعة 14:35
+    final normalizedStart = DateTime(
+      plan.startDate.year,
+      plan.startDate.month,
+      plan.startDate.day,
+      // بدون ساعة أو دقيقة — يبدأ من 00:00
+    );
+
     for (int i = 0; i < plan.days.length; i++) {
       final day = plan.days[i];
       if (day.isCompleted || day.surahNumbers.isEmpty) continue;
 
-      final date = plan.startDate.add(Duration(days: i));
+      // ✅ الآن كل يوم بيتحسب من منتصف الليل بالظبط
+      final date = normalizedStart.add(Duration(days: i));
 
       final scheduledDate = tz.TZDateTime(
         tz.local,
@@ -139,6 +155,8 @@ class NotificationService {
         minute,
       );
 
+      // ✅ لو الوقت فات، اعمل skip — ده صح وبيشتغل صح دلوقتي
+      // لأن اليوم الأول مش هيبقى في الماضي إلا لو الوقت المحدد فات فعلاً
       if (scheduledDate.isBefore(tz.TZDateTime.now(tz.local))) continue;
 
       final surahNames =
